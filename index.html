@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional E'lon Bot - Web App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Asosiy sahifa -->
+        <div id="main-page" class="page active">
+            <header>
+                <h1>🌟 Professional E'lon Bot</h1>
+                <div class="user-info">
+                    <span id="username">Foydalanuvchi</span>
+                    <span id="balance">Hisob: 0 so'm</span>
+                </div>
+            </header>
+
+            <!-- Qidiruv -->
+            <div class="search-section">
+                <input type="text" id="search-input" placeholder="E'lon qidirish...">
+                <button onclick="searchPosts()">🔍</button>
+            </div>
+
+            <!-- Kategoriyalar -->
+            <div class="categories-section">
+                <h3>Kategoriyalar</h3>
+                <div class="categories-grid">
+                    <div class="category-item" onclick="filterByCategory('Transport')">
+                        <div class="category-icon">🚗</div>
+                        <div class="category-name">Transport</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Ko\'chmas mulk')">
+                        <div class="category-icon">🏠</div>
+                        <div class="category-name">Ko'chmas mulk</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Elektronika')">
+                        <div class="category-icon">📱</div>
+                        <div class="category-name">Elektronika</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Ish')">
+                        <div class="category-icon">💼</div>
+                        <div class="category-name">Ish</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Xizmatlar')">
+                        <div class="category-icon">🛍️</div>
+                        <div class="category-name">Xizmatlar</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Kiyim')">
+                        <div class="category-icon">👕</div>
+                        <div class="category-name">Kiyim</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E'lonlar ro'yxati -->
+            <div class="posts-list" id="posts-list">
+                <!-- E'lonlar shu yerga yuklanadi -->
+            </div>
+        </div>
+
+        <!-- E'lon joylash sahifasi -->
+        <div id="create-post-page" class="page">
+            <header>
+                <h1>➕ E'lon joylash</h1>
+                <button class="back-btn" onclick="showPage('main-page')">Orqaga</button>
+            </header>
+
+            <div class="form-group">
+                <label>Turini tanlang:</label>
+                <select id="post-type" onchange="updatePostType()">
+                    <option value="normal">📝 Oddiy e'lon (Bepul)</option>
+                    <option value="premium">⭐ Premium e'lon</option>
+                    <option value="vip">💎 VIP e'lon</option>
+                </select>
+            </div>
+            
+            <div id="premium-options" class="hidden">
+                <label>Premium muddat:</label>
+                <select id="premium-duration">
+                    <option value="3">🕒 3 kun - 10,000 so'm</option>
+                    <option value="7">📅 7 kun - 15,000 so'm</option>
+                    <option value="30">🗓️ 30 kun - 25,000 so'm</option>
+                </select>
+            </div>
+            
+            <div id="vip-options" class="hidden">
+                <label>VIP muddat:</label>
+                <select id="vip-duration">
+                    <option value="7">💎 7 kun - 19,000 so'm</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Kategoriya:</label>
+                <select id="category">
+                    <option value="Transport">🚗 Transport</option>
+                    <option value="Ko'chmas mulk">🏠 Ko'chmas mulk</option>
+                    <option value="Elektronika">📱 Elektronika</option>
+                    <option value="Ish">💼 Ish</option>
+                    <option value="Xizmatlar">🛍️ Xizmatlar</option>
+                    <option value="Kiyim">👕 Kiyim</option>
+                    <option value="Uy jihozlari">🛋️ Uy jihozlari</option>
+                    <option value="Hobbilar">🎨 Hobbilar</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Sarlavha:</label>
+                <input type="text" id="title" placeholder="E'lon sarlavhasi">
+            </div>
+
+            <div class="form-group">
+                <label>Tavsif:</label>
+                <textarea id="description" placeholder="E'lon tavsifi" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Narx (ixtiyoriy):</label>
+                <input type="text" id="price" placeholder="Masalan: 5,000,000 so'm">
+            </div>
+
+            <div class="form-group">
+                <label>Telefon:</label>
+                <input type="tel" id="phone" placeholder="+998 XX XXX XX XX">
+            </div>
+
+            <div class="form-group">
+                <label>Manzil:</label>
+                <input type="text" id="location" placeholder="Toshkent, Chilonzor">
+            </div>
+
+            <div class="form-group">
+                <label>Rasm:</label>
+                <input type="file" id="photo" accept="image/*">
+            </div>
+
+            <button class="btn submit-btn" onclick="createPost()">E'lon joylash</button>
+        </div>
+
+        <!-- Reklama qilish sahifasi -->
+        <div id="advertising-page" class="page">
+            <header>
+                <h1>📢 Reklama qilish</h1>
+                <button class="back-btn" onclick="showPage('main-page')">Orqaga</button>
+            </header>
+
+            <div class="ad-info">
+                <p><strong>Reklama narxlari:</strong></p>
+                <ul>
+                    <li>2-chi e'lon joylash: 2,000 so'm (1 oy)</li>
+                    <li>E'lon ko'tarish: 1,500 so'm (1 soat)</li>
+                    <li>Top e'lon: 5,000 so'm (1 kun)</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>E'lonni tanlang:</label>
+                <select id="ad-post-select">
+                    <option value="">E'lonlaringizni tanlang...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Reklama turi:</label>
+                <select id="ad-type">
+                    <option value="second_post">2-chi e'lon joylash - 2,000 so'm (1 oy)</option>
+                    <option value="promote">E'lon ko'tarish - 1,500 so'm (1 soat)</option>
+                    <option value="top">Top e'lon - 5,000 so'm (1 kun)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Muddat:</label>
+                <select id="ad-duration">
+                    <option value="1">1 kun</option>
+                    <option value="7">7 kun</option>
+                    <option value="30" selected>30 kun</option>
+                </select>
+            </div>
+
+            <button class="btn submit-btn" onclick="createAd()">Reklama qilish</button>
+        </div>
+
+        <!-- Mening e'lonlarim sahifasi -->
+        <div id="my-posts-page" class="page">
+            <header>
+                <h1>📊 Mening e'lonlarim</h1>
+                <button class="back-btn" onclick="showPage('main-page')">Orqaga</button>
+            </header>
+
+            <div class="my-posts-list" id="my-posts-list">
+                <!-- Foydalanuvchi e'lonlari shu yerga yuklanadi -->
+            </div>
+        </div>
+
+        <!-- Hisob sahifasi -->
+        <div id="balance-page" class="page">
+            <header>
+                <h1>💰 Hisob</h1>
+                <button class="back-btn" onclick="showPage('main-page')">Orqaga</button>
+            </header>
+
+            <div class="balance-info">
+                <p><strong>Joriy hisob:</strong> <span id="current-balance">0</span> so'm</p>
+                <p><strong>Bepul e'lon:</strong> <span id="free-post-status">Mavjud</span></p>
+                <p><strong>Reklama:</strong> <span id="ad-status">Faol</span></p>
+            </div>
+            
+            <div class="balance-history">
+                <h3>To'lov tarixi:</h3>
+                <div id="payment-history">
+                    <!-- To'lov tarixi shu yerga yuklanadi -->
+                </div>
+            </div>
+            
+            <button class="btn submit-btn" onclick="showSection('payment')">Hisobni to'ldirish</button>
+        </div>
+
+        <!-- Chat sahifasi (tez orada) -->
+        <div id="chat-page" class="page">
+            <header>
+                <h1>💬 Chat</h1>
+                <button class="back-btn" onclick="showPage('main-page')">Orqaga</button>
+            </header>
+
+            <div class="chat-container">
+                <div class="chat-message">
+                    <div class="message-sender">Sotuvchi</div>
+                    <div class="message-text">Assalomu alaykum! Bu mahsulot haqida savolingiz bormi?</div>
+                    <div class="message-time">10:30</div>
+                </div>
+                <div class="chat-message my-message">
+                    <div class="message-sender">Men</div>
+                    <div class="message-text">Narxi qancha?</div>
+                    <div class="message-time">10:31</div>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" placeholder="Xabar yozing...">
+                <button>➤</button>
+            </div>
+        </div>
+
+        <!-- Profil sahifasi -->
+        <div id="profile-page" class="page">
+            <header>
+                <h1>👤 Profilim</h1>
+                <button class="back-btn" onclick="showPage('main-page')">Orqaga</button>
+            </header>
+
+            <div class="profile-info">
+                <div class="avatar">👤</div>
+                <div class="profile-details">
+                    <h3 id="profile-name">Foydalanuvchi</h3>
+                    <p id="profile-email">email@example.com</p>
+                    <p id="profile-phone">+998 XX XXX XX XX</p>
+                    <p id="profile-location">Toshkent, Chilonzor</p>
+                </div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-posts">0</div>
+                    <div class="stat-label">E'lonlar</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="total-views">0</div>
+                    <div class="stat-label">Ko'rishlar</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="total-revenue">0</div>
+                    <div class="stat-label">Daromad</div>
+                </div>
+            </div>
+
+            <button class="btn submit-btn" onclick="showSection('balance')">Hisob ma'lumotlari</button>
+            <button class="btn" onclick="logout()">Chiqish</button>
+        </div>
+
+        <!-- Pastki navigatsiya paneli -->
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="showPage('main-page')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">E'lonlar</div>
+            </div>
+            <div class="nav-item" onclick="showPage('my-posts-page')">
+                <div class="nav-icon">❤️</div>
+                <div class="nav-label">Saralangan</div>
+            </div>
+            <div class="nav-item" onclick="showPage('create-post-page')">
+                <div class="nav-icon">➕</div>
+                <div class="nav-label">E'lon bering</div>
+            </div>
+            <div class="nav-item" onclick="showPage('chat-page')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Chat</div>
+            </div>
+            <div class="nav-item" onclick="showPage('profile-page')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Profilim</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
