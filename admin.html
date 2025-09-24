@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Professional E'lon Bot</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li class="nav-item active" onclick="showSection('dashboard')">
+                        <span>📊</span> Dashboard
+                    </li>
+                    <li class="nav-item" onclick="showSection('users')">
+                        <span>👥</span> Foydalanuvchilar
+                    </li>
+                    <li class="nav-item" onclick="showSection('posts')">
+                        <span>📝</span> E'lonlar
+                    </li>
+                    <li class="nav-item" onclick="showSection('payments')">
+                        <span>💳</span> To'lovlar
+                    </li>
+                    <li class="nav-item" onclick="showSection('advertisements')">
+                        <span>📢</span> Reklamalar
+                    </li>
+                    <li class="nav-item" onclick="showSection('statistics')">
+                        <span>📈</span> Statistika
+                    </li>
+                    <li class="nav-item" onclick="showSection('broadcast')">
+                        <span>📢</span> Xabar yuborish
+                    </li>
+                    <li class="nav-item" onclick="showSection('settings')">
+                        <span>⚙️</span> Sozlamalar
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard -->
+            <div id="dashboard" class="section active">
+                <h1>📊 Dashboard</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>👥 Foydalanuvchilar</h3>
+                        <p class="stat-number" id="total-users">0</p>
+                        <p class="stat-change">Bugun: +0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📝 E'lonlar</h3>
+                        <p class="stat-number" id="total-posts">0</p>
+                        <p class="stat-change">Faol: 0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💳 Daromad</h3>
+                        <p class="stat-number" id="total-revenue">0 so'm</p>
+                        <p class="stat-change">Bugun: 0 so'm</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>✅ To'lovlar</h3>
+                        <p class="stat-number" id="total-payments">0</p>
+                        <p class="stat-change">Tasdiqlangan: 0</p>
+                    </div>
+                </div>
+
+                <div class="recent-sections">
+                    <div class="recent-posts">
+                        <h3>Yangi e'lonlar</h3>
+                        <div id="recent-posts-list">
+                            <!-- Yangi e'lonlar shu yerga yuklanadi -->
+                        </div>
+                    </div>
+                    <div class="recent-payments">
+                        <h3>Yangi to'lovlar</h3>
+                        <div id="recent-payments-list">
+                            <!-- Yangi to'lovlar shu yerga yuklanadi -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foydalanuvchilar -->
+            <div id="users" class="section">
+                <h1>👥 Foydalanuvchilar</h1>
+                <div class="search-filter">
+                    <input type="text" id="user-search" placeholder="Foydalanuvchi qidirish...">
+                    <button onclick="searchUsers()">🔍 Qidirish</button>
+                    <button onclick="loadUsers()">🔄 Yangilash</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Ism</th>
+                                <th>Hisob</th>
+                                <th>E'lonlar</th>
+                                <th>Sana</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Foydalanuvchilar shu yerga yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- E'lonlar -->
+            <div id="posts" class="section">
+                <h1>📝 E'lonlar</h1>
+                <div class="search-filter">
+                    <input type="text" id="post-search" placeholder="E'lon qidirish...">
+                    <select id="post-status">
+                        <option value="">Barcha holatlar</option>
+                        <option value="pending">Kutmoqda</option>
+                        <option value="active">Faol</option>
+                        <option value="expired">Muddati o'tgan</option>
+                    </select>
+                    <button onclick="searchPosts()">🔍 Qidirish</button>
+                    <button onclick="loadPosts()">🔄 Yangilash</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Sarlavha</th>
+                                <th>Kategoriya</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Holat</th>
+                                <th>Sana</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="posts-table-body">
+                            <!-- E'lonlar shu yerga yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- To'lovlar -->
+            <div id="payments" class="section">
+                <h1>💳 To'lovlar</h1>
+                <div class="search-filter">
+                    <input type="text" id="payment-search" placeholder="To'lov qidirish...">
+                    <select id="payment-status">
+                        <option value="">Barcha holatlar</option>
+                        <option value="pending">Kutmoqda</option>
+                        <option value="completed">Tasdiqlangan</option>
+                        <option value="rejected">Rad etilgan</option>
+                    </select>
+                    <button onclick="searchPayments()">🔍 Qidirish</button>
+                    <button onclick="loadPayments()">🔄 Yangilash</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Summa</th>
+                                <th>Chak</th>
+                                <th>Holat</th>
+                                <th>Sana</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-table-body">
+                            <!-- To'lovlar shu yerga yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reklamalar -->
+            <div id="advertisements" class="section">
+                <h1>📢 Reklamalar</h1>
+                <div class="search-filter">
+                    <input type="text" id="ad-search" placeholder="Reklama qidirish...">
+                    <select id="ad-type">
+                        <option value="">Barcha turlar</option>
+                        <option value="second_post">2-chi e'lon</option>
+                        <option value="promote">Ko'tarish</option>
+                        <option value="top">Top e'lon</option>
+                    </select>
+                    <button onclick="searchAds()">🔍 Qidirish</button>
+                    <button onclick="loadAds()">🔄 Yangilash</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>E'lon</th>
+                                <th>Tur</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Muddat</th>
+                                <th>Holat</th>
+                                <th>Sana</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ads-table-body">
+                            <!-- Reklamalar shu yerga yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Statistika -->
+            <div id="statistics" class="section">
+                <h1>📈 Statistika</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>👥 Foydalanuvchilar</h3>
+                        <p class="stat-number" id="stat-users">0</p>
+                        <p class="stat-change">Bugun: +0, Hafta: +0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📝 E'lonlar</h3>
+                        <p class="stat-number" id="stat-posts">0</p>
+                        <p class="stat-change">Bugun: +0, Hafta: +0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💳 Daromad</h3>
+                        <p class="stat-number" id="stat-revenue">0 so'm</p>
+                        <p class="stat-change">Bugun: 0, Hafta: 0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>✅ To'lovlar</h3>
+                        <p class="stat-number" id="stat-payments">0</p>
+                        <p class="stat-change">Tasdiqlangan: 0</p>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h3>E'lonlar grafikasi</h3>
+                    <canvas id="posts-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Xabar yuborish -->
+            <div id="broadcast" class="section">
+                <h1>📢 Xabar yuborish</h1>
+                <div class="broadcast-form">
+                    <div class="form-group">
+                        <label>Xabar turi:</label>
+                        <select id="broadcast-type">
+                            <option value="message">Xabar</option>
+                            <option value="announcement">E'lon</option>
+                            <option value="promotion">Reklama</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Xabar matni:</label>
+                        <textarea id="broadcast-message" placeholder="Xabaringizni kiriting..." rows="6"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Foydalanuvchilarga:</label>
+                        <select id="broadcast-target">
+                            <option value="all">Barcha foydalanuvchilar</option>
+                            <option value="active">Faol foydalanuvchilar</option>
+                            <option value="premium">Premium foydalanuvchilar</option>
+                        </select>
+                    </div>
+                    <button class="btn primary" onclick="sendBroadcast()">Xabar yuborish</button>
+                </div>
+            </div>
+
+            <!-- Sozlamalar -->
+            <div id="settings" class="section">
+                <h1>⚙️ Sozlamalar</h1>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>Bot nomi:</label>
+                        <input type="text" id="bot-name" placeholder="Bot nomini kiriting">
+                    </div>
+                    <div class="form-group">
+                        <label>Bot haqida:</label>
+                        <textarea id="bot-description" placeholder="Bot haqida tavsif" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Reklama narxlari:</label>
+                        <div class="price-settings">
+                            <input type="number" id="second-post-price" placeholder="2-chi e'lon narxi" value="2000">
+                            <input type="number" id="promote-price" placeholder="Ko'tarish narxi" value="1500">
+                            <input type="number" id="top-ad-price" placeholder="Top e'lon narxi" value="5000">
+                        </div>
+                    </div>
+                    <button class="btn primary" onclick="saveSettings()">Sozlamalarni saqlash</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal oynalar -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <!-- Modal tarkibi shu yerga yuklanadi -->
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
